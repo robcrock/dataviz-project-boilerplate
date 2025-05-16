@@ -1,0 +1,38 @@
+[
+  {
+      "infection": "Brucella",
+      "count": 54
+  },
+  {
+      "infection": "Vaccinia",
+      "count": 17
+  },
+  {
+      "infection": "Salmonella",
+      "count": 16
+  },
+  {
+      "infection": "Tuberculosis",
+      "count": 15
+  },
+  {
+      "infection": "E. coli",
+      "count": 11
+  },
+  {
+      "infection": "Ebola",
+      "count": 9
+  },
+  {
+      "infection": "Dengue",
+      "count": 7
+  },
+  {
+      "infection": "Tularemia",
+      "count": 7
+  },
+  {
+      "infection": "Hantavirus",
+      "count": 6
+  }
+]
