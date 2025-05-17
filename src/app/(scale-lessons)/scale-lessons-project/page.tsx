@@ -47,13 +47,13 @@ export default function ProjectPage() {
 
   // 4. Create the scales
   const xScale = scaleLinear()
-    .domain([0, d3.max(data, xAccessor)])
+    .domain([0, d3.max(data, xAccessor) + 2])
     .range([0, 700])
   
   const yScale = scaleBand()
     .domain([...data.map(d => d.infection)])
-    .range([0, 500])
-    .padding(0.5)
+    .range([-10, 500])
+    .padding(0.4)
 
   // 5. Draw Data
 
@@ -66,6 +66,7 @@ export default function ProjectPage() {
         <header className='w-full border-t-2 border-red-500 relative'>
           <div className='absolute w-10 h-2 bg-red-500' />
           <h1 className='mt-4 text-2xl font-semibold'>Escape artists</h1>
+          <h4 className='mt-1 mb-3 text-lg font-regular'>Number of laboratory-acquired infections, 1970-2021</h4>
         </header>
         <svg width={dimensions.width} height={dimensions.height}>
           <g style={{
@@ -81,16 +82,28 @@ export default function ProjectPage() {
             {xScale.ticks().map((tick: number, i: number) => {
               return <line key={i} x1={xScale(tick)} x2={xScale(tick)} y1={0} y2={dimensions.height} stroke='grey' strokeOpacity={0.3}/>
             })}
+
             {/* Bars */}
             {data.map((d, i) => {
               return (
                 <rect key={i} x={0} y={yScale(d.infection)} height={yScale.bandwidth()} width={xScale(d.count)} fill={'#076fa2'} />
               )
             })}
+            
+            {/* labels */}
+            {data.map((d, i) => {
+              const LEFT_PADDING = 4
+              const xOffset = d.count < 8 ? xScale(d.count) + LEFT_PADDING : LEFT_PADDING
+              const fill = d.count < 8 ? '#076fa2' : 'white'
+
+              return (
+                <text key={i} x={xOffset} y={yScale(d.infection)} dy={yScale.bandwidth() / 1.4} height={yScale.bandwidth()} width={xScale(d.count)} fill={fill} fontWeight={400}>{d.infection}</text>
+              )
+            })}
           </g>
         </svg>
         <footer>
-          <p className='-mb-4 text-gray-400 text-sm'>Sources: Laboratory-Acquired Infection Database; American Biological Safety Association</p>
+          <p className='mt-2 -mb-4 text-gray-400 text-sm'>Sources: Laboratory-Acquired Infection Database; American Biological Safety Association</p>
           <p className='text-gray-400 text-sm'>The Economist</p>
         </footer>
       </div>
