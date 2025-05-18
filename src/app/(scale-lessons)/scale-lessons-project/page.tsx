@@ -47,18 +47,18 @@ export default function ProjectPage() {
 
   // 4. Create the scales
   const xScale = scaleLinear()
-    .domain([0, d3.max(data, xAccessor) + 2])
+    .domain([0, 56])
     .range([0, 700])
   
   const yScale = scaleBand()
     .domain([...data.map(d => d.infection)])
-    .range([-10, 500])
-    .padding(0.4)
+    .range([0, dimensions.height - 15])
+    .paddingInner(0.4)
+    .paddingOuter(0.1)
 
   // 5. Draw Data
 
   // 6. Draw peripherals
-  console.log(xScale.ticks(10))
 
   return (
     <div className='container h-screen flex justify-center items-center'>
