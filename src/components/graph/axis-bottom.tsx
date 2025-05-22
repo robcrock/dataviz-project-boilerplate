@@ -1,14 +1,15 @@
-import { ScaleLinear} from 'd3'
+import { format, ScaleLinear} from 'd3'
 
 type AxisBottomProps = {
   xScale: ScaleLinear<number, number>
   pixelsPerTick: number;
   title?: string
+  formatString?: string
 }
 
 const TICK_LENGTH = 6
 
-export const AxisBottom = ({xScale, pixelsPerTick, title}: AxisBottomProps) => {
+export const AxisBottom = ({xScale, pixelsPerTick, title, formatString = ''}: AxisBottomProps) => {
   const range = xScale.range();
 
   const width = range[1] - range[0]
@@ -42,7 +43,7 @@ export const AxisBottom = ({xScale, pixelsPerTick, title}: AxisBottomProps) => {
               transform: 'translateY(20px)',
             }}
           >
-            {value}
+            {format(formatString)(value)}
           </text>
         </g>
       )

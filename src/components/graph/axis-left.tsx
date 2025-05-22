@@ -1,14 +1,15 @@
-import { ScaleLinear} from 'd3'
+import { format, ScaleLinear} from 'd3'
 
 type AxisLeftProps = {
   yScale: ScaleLinear<number, number>
   pixelsPerTick: number;
   title?: string;
+  formatString?: string;
 }
 
 const TICK_LENGTH = 6
 
-export const AxisLeft = ({yScale, pixelsPerTick, title}: AxisLeftProps) => {
+export const AxisLeft = ({yScale, pixelsPerTick, title, formatString = ""}: AxisLeftProps) => {
   const range = yScale.range();
 
   const height = range[0] - range[1]
@@ -42,7 +43,7 @@ export const AxisLeft = ({yScale, pixelsPerTick, title}: AxisLeftProps) => {
               transform: 'translate(-16px, 3px)',
             }}
           >
-            {value}
+            {format(formatString)(value)}
           </text>
         </g>
       )
