@@ -3,7 +3,8 @@
 import * as d3 from "d3";
 import { scaleOrdinal } from "d3-scale";
 import styles from "./styles.module.css";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDimensions } from "@/app/hooks/use-dimensions";
 
 type Datum = {
   name: string;
@@ -20,6 +21,10 @@ const data: Datum[] = [
 
 export default function PieChartPage() {
   const ref = useRef<SVGSVGElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const chartSize = useDimensions(wrapperRef)
+  console.log('chartSize', chartSize)
+  
   // 6 step approach to creating a chart in D3
   // 1. [x] access data
   // 2. [x] establish dims
@@ -41,9 +46,10 @@ export default function PieChartPage() {
     boundedWidth?: number;
   }
 
+  // const size = Math.min(O)
   let dims: Dimensions = {
-    height: 500,
-    width: 500,
+    width: chartSize.width,
+    height: chartSize.height,
     margin: {
       top: 20,
       right: 120,
@@ -68,10 +74,6 @@ export default function PieChartPage() {
     "#6b486b",
     "#a05d56",
   ].reverse();
-
-  const colorScale = scaleOrdinal<string, string>()
-    .domain(data.map((d) => d.name) as string[])
-    .range(colors as string[]);
 
   // Generators
   const pieGenerator = d3.pie<Datum>().value(valueAccessor);
@@ -159,16 +161,18 @@ export default function PieChartPage() {
   });
 
   return (
-    <svg width={dims.width} height={dims.height}>
-      <g
-        style={{
-          transform: `translate(${dims.width / 2}px, ${dims.height / 2}px)`,
-        }}
-        className={styles.container}
-        ref={ref}
-      >
-        {shapes}
-      </g>
-    </svg>
+    <div ref={wrapperRef} className='h-screen'>
+      <svg width={dims.width} height={dims.height}>
+        <g
+          style={{
+            transform: `translate(${dims.width / 2}px, ${dims.height / 2}px)`,
+          }}
+          className={styles.container}
+          ref={ref}
+        >
+          {shapes}
+        </g>
+      </svg>
+    </div>
   );
 }
