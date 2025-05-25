@@ -23,7 +23,6 @@ export default function PieChartPage() {
   const ref = useRef<SVGSVGElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null)
   const chartSize = useDimensions(wrapperRef)
-  console.log('chartSize', chartSize)
   
   // 6 step approach to creating a chart in D3
   // 1. [x] access data
@@ -82,8 +81,7 @@ export default function PieChartPage() {
 
   const arcPathGenerator = d3.arc();
   const shapes = pie.map((arc, i) => {
-    console.log("arc", arc);
-    // Pie Shapes
+    // Pie Shapess
     const arcInfo = {
       innerRadius: 0,
       outerRadius: RADIUS,
