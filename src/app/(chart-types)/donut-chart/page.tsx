@@ -2,7 +2,7 @@
 
 import * as d3 from "d3";
 import style from "./styles.module.css";
-import { useRef } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 
 export type DataItem = {
   name: string;
@@ -18,7 +18,7 @@ export const data: DataItem[] = [
   { name: "Nicolas", value: 98 },
 ];
 
-const colors = [
+export const colors = [
   "#98abc5",
   "#8a89a6",
   "#7b6888",
@@ -26,13 +26,20 @@ const colors = [
   "#a05d56",
 ].reverse();
 
-export default function DonutChartPage() {
+type DonutChartProps = {
+  height: number
+  width: number
+  hoveredGroup: null | string
+  handleHovered: Dispatch<SetStateAction<null>>
+}
+
+export default function DonutChartPage(props: DonutChartProps) {
   const sliceRef = useRef<SVGSVGElement>(null);
 
   // 2. define dimensions
   const dims = {
-    height: 500,
-    width: 500,
+    height: props.height,
+    width: props.width,
     margin: {
       top: 40,
       right: 40,
@@ -80,22 +87,14 @@ export default function DonutChartPage() {
         }}
       >
         {shapes.map((d, i) => {
+          console.log('data', data[i])
           return (
             <g
               key={i}
-              className={style.slice}
-              onMouseEnter={() => {
-                if (sliceRef.current) {
-                  sliceRef.current.classList.add(style.hasHighlight);
-                }
-              }}
-              onMouseLeave={() => {
-                if (sliceRef.current) {
-                  sliceRef.current.classList.remove(style.hasHighlight);
-                }
-              }}
+              onMouseEnter={() => props.handleHovered(data[i].name)}
+              onMouseLeave={() => props.handleHovered(null)}
             >
-              <path d={d as string} fill={colors[i]} />
+              <path d={d as string} fill={colors[i]} fillOpacity={data[i].name === props.hoveredGroup ? 1 : 0.5} />
             </g>
           );
         })}
